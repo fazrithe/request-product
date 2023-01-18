@@ -10,10 +10,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header text-center"><img src="{{ asset('assets/img/logo2.png') }}" alt="User Image" width="50%">
+                <div class="card-header text-center">
+                    <img src="{{ asset('assets/img/logo2.png') }}" alt="User Image" width="50%">
                     @if ($message = Session::get('error'))
                     <div class="alert alert-danger">
                     <p>{{ $message }}</p>
+                </div>
+                <div class="">
+                    <a href="#" class="">Permintaan</a>
                 </div>
                 @endif
                 <div class="card-body">
@@ -111,11 +115,25 @@
                                         <a href="#" class="btn btn-success">Scan</a>
                                     </div>
                                     <div class="col">
-                                        <Button class="btn btn-primary">Permintaan</Button>
+                                        <Button class="btn btn-primary">Submit</Button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+                </div>
+                <div class="text-right">
+                    <a href="{{ route("product.show") }}" class="btn btn-primary">Permintaan</a>
+                    <a class="btn btn-danger" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    <i class="far fa-circle nav-icon"></i>
+                    {{ __('Logout') }}
+                    </a>
+
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    </form>
                 </div>
             </div>
         </div>
