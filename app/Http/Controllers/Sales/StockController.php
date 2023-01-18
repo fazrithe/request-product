@@ -87,6 +87,7 @@ class StockController extends Controller
         $requestProduct->sales_id = $user_id;
         $requestProduct->gudang_id = $dataGudang->id;
         $requestProduct->total = $request->stock;
+        $requestProduct->request_time = date('Y-m-d H:i:s');
         $requestProduct->save();
 
         return redirect()->to('showProduct');
