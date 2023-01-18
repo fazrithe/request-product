@@ -33,7 +33,7 @@ class StockController extends Controller
     {
         $data = [
             'login_date' => $request->session()->get('login_date'),
-            'area'  => Auth::user()->area,
+            'area'  =>  $request->session()->get('login_area'),
         ];
         return view('stock.index', compact('data'));
     }

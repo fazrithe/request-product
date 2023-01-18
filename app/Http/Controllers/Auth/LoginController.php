@@ -48,10 +48,10 @@ class LoginController extends Controller
         $data = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-            'area' => $request->input('area'),
         ];
 
         $request->session()->put('login_date', $request->login_date);
+        $request->session()->put('login_area', $request->input('area'));
 
         if (Auth::Attempt($data)) {
             $area = Auth::user()->area;

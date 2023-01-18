@@ -31,7 +31,7 @@
                             <label class="col-md-4 col-form-label text-md-right">{{ __('Nama Sales') }}</label>
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="text" name="sales_name" id="sales_name" class="form-control" placeholder="Nama Sales">
+                                    <input type="text" name="sales_name" id="sales_name" class="form-control" value="{{ Auth::user()->name }}" placeholder="Nama Sales">
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                         <a href="#" class="btn btn-success">Scan</a>
                                     </div>
                                     <div class="col">
-                                        <Button class="btn btn-primary">Save</Button>
+                                        <Button class="btn btn-primary">Permintaan</Button>
                                     </div>
                                 </div>
                             </form>
