@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Sales_stock;
+use App\Models\Request_product;
+use App\Models\User;
 
 class StockController extends Controller
 {
@@ -76,68 +78,18 @@ class StockController extends Controller
      */
     public function updateProduct(Request $request)
     {
-        $area = Auth::user()->area;
+        $area = $request->session()->get('login_area');
+        $dataGudang = User::where('name',$area)->first();
         $user_id = Auth::user()->id;
-        $data = Sales_stock::where('product_id',$request->id)
-        ->whereDate('sales_stocks.updated_at', $request->update_date)
-        ->first();
-        if(!empty($data)){
-            $salesStock = Sales_stock::where('product_id',$request->id)->first();
-            $salesStock->user_id = $user_id;
-            $salesStock->product_id = $request->id;
-            if($area == 'toko1'){
-                $salesStock->stok_toko1 = $request->stock;
-            }elseif($area == 'toko2'){
-                $salesStock->stok_toko2 = $request->stock;
-            }elseif($area == 'toko3'){
-                $salesStock->stok_toko3 = $request->stock;
-            }elseif($area == 'toko4'){
-                $salesStock->stok_toko4 = $request->stock;
-            }elseif($area == 'toko5'){
-                $salesStock->stok_toko5 = $request->stock;
-            }elseif($area == 'gudang1'){
-                $salesStock->stok_gudang1 = $request->stock;
-            }elseif($area == 'gudang2'){
-                $salesStock->stok_gudang2 = $request->stock;
-            }elseif($area == 'gudang3'){
-                $salesStock->stok_gudang3 = $request->stock;
-            }elseif($area == 'gudang4'){
-                $salesStock->stok_gudang4 = $request->stock;
-            }elseif($area == 'gudang5'){
-                $salesStock->stok_gudang5 = $request->stock;
-            }
-            $salesStock->updated_at = $request->update_date;
-            $salesStock->save();
-        }else{
-            $salesStock = new Sales_stock();
-            $salesStock->user_id = $user_id;
-            $salesStock->product_id = $request->id;
-            if($area == 'toko1'){
-                $salesStock->stok_toko1 = $request->stock;
-            }elseif($area == 'toko2'){
-                $salesStock->stok_toko2 = $request->stock;
-            }elseif($area == 'toko3'){
-                $salesStock->stok_toko3 = $request->stock;
-            }elseif($area == 'toko4'){
-                $salesStock->stok_toko4 = $request->stock;
-            }elseif($area == 'toko5'){
-                $salesStock->stok_toko5 = $request->stock;
-            }elseif($area == 'gudang1'){
-                $salesStock->stok_gudang1 = $request->stock;
-            }elseif($area == 'gudang2'){
-                $salesStock->stok_gudang2 = $request->stock;
-            }elseif($area == 'gudang3'){
-                $salesStock->stok_gudang3 = $request->stock;
-            }elseif($area == 'gudang4'){
-                $salesStock->stok_gudang4 = $request->stock;
-            }elseif($area == 'gudang5'){
-                $salesStock->stok_gudang5 = $request->stock;
-            }
-            $salesStock->updated_at = $request->update_date;
-            $salesStock->save();
-        }
 
-        return redirect()->to('showProduct/'.$request->id);
+        $requestProduct = new Request_product();
+        $requestProduct->product_id = $request->id;
+        $requestProduct->sales_id = $user_id;
+        $requestProduct->gudang_id = $dataGudang->id;
+        $requestProduct->total = $request->stock;
+        $requestProduct->save();
+
+        return redirect()->to('showProduct');
     }
 
           /**
@@ -145,13 +97,17 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showProduct($id)
+    public function showProduct()
     {
-        $data = Product::find($id);
-        $datastock = Sales_stock::where('product_id',$id)->first();
+        $requestProducts = Request_product::select('request_products.sales_id','request_products.total','request_products.request_time','request_products.answare_time','request_products.answare','products.nama_barang')
+                                            ->where('sales_id',Auth::user()->id)
+                                            ->join('products','products.id', '=','request_products.product_id')
+                                            ->get();
+        $data = Product::find(1);
+        $datastock = Sales_stock::where('product_id',1)->first();
         $total_toko = $datastock->stok_toko1 + $datastock->stok_toko2 + $datastock->stok_toko3 + $datastock->stok_toko4 + $datastock->stok_toko4;
         $total_gudang = $datastock->stok_gudang1 + $datastock->stok_gudang2 + $datastock->stok_gudang3 + $datastock->stok_gudang4 + $datastock->stok_gudang4;
         $total = $total_gudang + $total_toko;
-        return view('stock.show', compact('data','datastock','total','total_toko','total_gudang'));
+        return view('stock.show', compact('requestProducts','data','datastock','total','total_toko','total_gudang'));
     }
 }

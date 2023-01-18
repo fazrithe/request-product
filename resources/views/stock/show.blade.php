@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center"><img src="{{ asset('assets/img/logo2.png') }}" alt="User Image" width="50%">
                     @if ($message = Session::get('error'))
@@ -19,73 +19,38 @@
                 <div class="card-body">
                     <div class="col mb-4">
                         <div class="text-center text-bold">STOCK OPNAME TOKO</div>
-                        <div class="text-right">
-                            <label>{{ $data['login_date'] }}</label>
+                        <div class="text-left">
+                            <label>{{ date('Y-m-d H:i:s') }}</label>
                         </div>
                     </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label id="merk">{{ $data->merk }}</label>
-                            </div>
-                            <div class="col-6">
-                                <label id="barcode">{{ $data->barcode }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label id="nama_barang">{{ $data->nama_barang }}</label>
-                            </div>
-                        </div>
-                        {{-- <div class="row">
-                            <div class="col">
-                                <p>Toko seduh teh china</p>
-                            </div>
-                        </div> --}}
-                        <hr>
-                        <div id="jumlah" style="display: block">
-                                <div class="row">
-                                    <div class="col-4 text-right">
-                                        <label>Stok Toko</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="hidden" id="id" class="form-control" name="id">
-                                        <input type="number"  class="form-control" name="stock" value="{{ $total_toko }}" readonly>
-                                    </div>
-                                    <div class="col-4 text-left">
-                                        <label id="satuan">{{ $data->satuan }}</label>
-                                    </div>
-                                </div>
-                        </div>
-                        <hr>
-                        <div id="jumlah" style="display: block">
-                            <div class="row">
-                                <div class="col-4 text-right">
-                                    <label>Stok Gudang</label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="hidden" id="id" class="form-control" name="id">
-                                    <input type="number" class="form-control" name="stock" value="{{ $total_gudang }}" readonly>
-                                </div>
-                                <div class="col-4 text-left">
-                                    <label id="satuan">{{ $data->satuan }}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div id="jumlah" style="display: block">
-                            <div class="row">
-                                <div class="col-4 text-right">
-                                    <label>Total</label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="hidden" id="id" class="form-control" name="id">
-                                    <input type="number" class="form-control" name="stock" value="{{ $total }}" readonly>
-                                </div>
-                                <div class="col-4 text-left">
-                                    <label id="satuan">{{ $data->satuan }}</label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col">
+                        <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama Sales</th>
+                                <th scope="col">Permintaan Barang</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Jam Minta</th>
+                                <th scope="col">Jam Selesai</th>
+                                <th scope="col">Jawaban Gudang</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($requestProducts as $item)
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>{{ $item->nama_barang }}</td>
+                                <td>{{ $item->nama_barang }}</td>
+                                <td>{{ $item->total }}</td>
+                                <td>{{ $item->request_time }}</td>
+                                <td>{{ $item->answare_time }}</td>
+                                <td>{{ $item->answare }}</td>
+                              </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                         <hr>
                         <div id="jumlah" style="display: block">
                             <div class="row">
