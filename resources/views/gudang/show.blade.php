@@ -45,7 +45,10 @@
                                 <td>{{ $item->total }}</td>
                                 <td>{{ $item->request_time }}</td>
                                 <td>{{ $item->answare_time }}</td>
-                                <td>{{ $item->answare }}</td>
+                                <td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalJawab">
+                                    Jawab
+                                </a>
+                                </td>
                               </tr>
                             @endforeach
                             </tbody>
@@ -84,44 +87,3 @@
   </footer>
 </div>
 </body>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous">
-</script>
-<script>
-    jQuery(document).ready(function(){
-       jQuery('#btnsearch').click(function(e){
-          e.preventDefault();
-          $.ajaxSetup({
-             headers: {
-                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-             }
-         });
-          jQuery.ajax({
-             url: "{{ route('product.search') }}",
-             method: 'post',
-             data: {
-                kode_barang: jQuery('#kode_barang').val(),
-             },
-             success: function(result){
-                var result = JSON.parse(result);
-
-                if(result.statusCode == 200){
-                    jQuery('#merk').html(result.data.merk);
-                    jQuery('#nama_barang').html(result.data.nama_barang);
-                    jQuery('#barcode').html(result.data.barcode);
-                    jQuery('#satuan').html(result.data.satuan);
-                    jQuery('#id').val(result.data.id);
-                    var x = document.getElementById("jumlah");
-                    if (x.style.display === "none") {
-                        x.style.display = "block";
-                    } else {
-                        x.style.display = "none";
-                    }
-                }else{
-                    alert("Data tidak ditemukan !");
-                }
-             }});
-          });
-       });
-</script>

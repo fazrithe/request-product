@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Sales\StockController;
+use App\Http\Controllers\Gudang\GudangController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,11 +25,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/gudang', function () {
+    return view('login-gudang');
+});
+
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
+Route::post('actionlogin-gudang', [LoginController::class, 'actionloginGudang'])->name('actionlogin.gudang');
 Route::post('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
@@ -40,4 +47,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('searchProduct', [StockController::class, 'searchProduct'])->name('product.search');
     Route::post('updateProduct', [StockController::class, 'updateProduct'])->name('product.update');
     Route::get('showProduct', [StockController::class, 'showProduct'])->name('product.show');
+    Route::get('showProduct-gudang', [GudangController::class, 'index'])->name('product.show.gudang');
 });

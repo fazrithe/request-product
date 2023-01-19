@@ -61,6 +61,21 @@ class LoginController extends Controller
         }
     }
 
+    public function actionloginGudang(Request $request)
+    {
+        $data = [
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+        ];
+        if (Auth::Attempt($data)) {
+            $area = Auth::user()->area;
+            return redirect('showProduct-gudang');
+        }else{
+            return redirect('/')->with('error', 'Email atau Password Salah');
+        }
+    }
+
+
     public function actionlogout(Request $request)
     {
         Auth::logout();
